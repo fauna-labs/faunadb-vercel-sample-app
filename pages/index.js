@@ -62,7 +62,7 @@ function App({ collections = [], isDeployed }) {
         <>
           <h2>Deploy to ZEIT Now to verify integration</h2>
           <p style={{ fontSize: 20 }}>
-            The <code>FAUNADB_SERVER_SECRET</code> environment variable is not
+            The <code>FAUNADB_SECRET</code> environment variable is not
             configured locally or in CodeSandbox, but will be available to the
             application when deployed to ZEIT Now.
           </p>
