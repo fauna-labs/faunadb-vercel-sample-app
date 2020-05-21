@@ -13,7 +13,7 @@ export default async (req, res) => {
     let collections = [];
 
     if (!client) {
-      return [];
+      return res.json({ collections: [] });
     }
 
     await client
