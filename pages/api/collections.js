@@ -13,7 +13,7 @@ export default async (req, res) => {
     let collections = [];
 
     if (!client) {
-      return [];
+      return res.status(500).json({ error: new Error('Missing secret to connect to FaunaDB') });
     }
 
     await client
