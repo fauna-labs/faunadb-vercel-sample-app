@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-unfetch';
 import Head from 'next/head';
 
 const NOT_DEPLOYED = 'NOT_DEPLOYED';
@@ -6,7 +5,7 @@ class NotDeployedError extends Error {
   constructor() {
     super();
     this.code = NOT_DEPLOYED;
-    this.message = 'Project must be deployed to ZEIT Now';
+    this.message = 'Project must be deployed to Vercel';
   }
 }
 
@@ -20,7 +19,7 @@ function App({ collections = [], isDeployed }) {
   return (
     <div style={{ maxWidth: 600, padding: 16 }}>
       <Head>
-        <title>FaunaDB ZEIT App</title>
+        <title>FaunaDB Vercel App</title>
         <meta
           name="viewport"
           content="initial-scale=1.0, width=device-width"
@@ -44,7 +43,7 @@ function App({ collections = [], isDeployed }) {
             monospace, serif;
         }
       `}</style>
-      <h1>FaunaDB ZEIT Integration</h1>
+      <h1>FaunaDB Vercel Integration</h1>
       {isDeployed ? (
         <>
           <h2>Collections</h2>
@@ -60,11 +59,11 @@ function App({ collections = [], isDeployed }) {
         </>
       ) : (
         <>
-          <h2>Deploy to ZEIT Now to verify integration</h2>
+          <h2>Deploy to Vercel to verify integration</h2>
           <p style={{ fontSize: 20 }}>
             The <code>FAUNADB_SECRET</code> environment variable is not
             configured locally or in CodeSandbox, but will be available to the
-            application when deployed to ZEIT Now.
+            application when deployed to Vercel.
           </p>
           <h3>Steps to deploy</h3>
           <ol>
@@ -74,12 +73,12 @@ function App({ collections = [], isDeployed }) {
             <li>Click the "Fork Sandbox" button</li>
             <li>Return to the Deployment menu</li>
             <li>
-              Click "Now" (You'll need to sign in to Now when you're deploying
-              for the first time)
+              Click "Vercel" (You'll need to sign in to Vercel when you're
+              deploying for the first time)
             </li>
             <li>
-              Click the "Deploy" button, then click the "Deploy Now" button in the
-              DEPLOYMENT dialog
+              Click the "Deploy" button, then click the "Deploy with Vercel"
+              button in the DEPLOYMENT dialog
             </li>
             <li>
               Click the deployment link and wait for building to complete to
@@ -92,30 +91,32 @@ function App({ collections = [], isDeployed }) {
   );
 }
 
-App.getInitialProps = async ({ req }) => {
+export async function getServerSideProps({ req }) {
   try {
-    const { 'x-now-deployment-url': nowURL } = req.headers;
+    const { 'x-vercel-deployment-url': vercelURL } = req.headers;
 
-    if (!nowURL) {
+    if (!vercelURL) {
       throw new NotDeployedError();
     }
 
-    const res = await fetch(`https://${nowURL}/api/collections`);
+    const res = await fetch(`https://${vercelURL}/api/collections`);
     const { collections, error } = await res.json();
 
     if (!res.ok) {
       throw new Error(error.message);
     }
 
-    return { collections, isDeployed: true };
+    return { props: { collections, isDeployed: true } };
   } catch (error) {
     return {
-      error: {
-        message: error.message
+      props: {
+        error: {
+          message: error.message,
+        },
+        isDeployed: error.code !== NOT_DEPLOYED,
       },
-      isDeployed: error.code !== NOT_DEPLOYED
     };
   }
-};
+}
 
 export default App;
