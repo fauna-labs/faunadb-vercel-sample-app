@@ -1,4 +1,6 @@
-# Fauna Labs
+**Note**: This repository has been deprecated and is no longer updated. For a current sample app that shows you how to deploy your apps built with Fauna and Next.js on Vercel, see [this repository](https://github.com/vercel/next.js/tree/canary/examples/with-fauna).
+
+---
 
 This repository contains unofficial patterns, sample code, or tools to help developers build more effectively with [Fauna][fauna]. All [Fauna Labs][fauna-labs] repositories are provided “as-is” and without support. By using this repository or its contents, you agree that this repository may never be officially supported and moved to the [Fauna organization][fauna-organization].
 
@@ -6,7 +8,9 @@ This repository contains unofficial patterns, sample code, or tools to help deve
 [fauna-labs]: https://github.com/fauna-labs
 [fauna-organization]: https://github.com/fauna
 
-# Hello World example
+---
+
+# [DEPRECATED] Hello World example
 
 ## How to use
 
